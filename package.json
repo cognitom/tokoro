@@ -1,0 +1,25 @@
+{
+  "name": "tokoro",
+  "version": "0.0.1",
+  "description": "Japanese geocoding library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tsutomu Kawamura",
+  "license": "MIT",
+  "devDependencies": {
+    "coffee-script": "^1.9.3",
+    "csv-parser": "^1.7.0",
+    "djb2": "0.0.2",
+    "gulp": "^3.9.0",
+    "gulp-chmod": "^1.2.0",
+    "gulp-decompress": "^1.0.2",
+    "gulp-download": "0.0.1",
+    "gulp-filter": "^2.0.2",
+    "gulp-rename": "^1.2.2",
+    "iconv": "^2.1.8",
+    "request": "^2.58.0",
+    "through2": "^2.0.0"
+  }
+}
