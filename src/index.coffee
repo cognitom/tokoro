@@ -1,28 +1,25 @@
-djb       = require '../lib/djb'
-base94    = require '../lib/base94'
-normalize = require '../lib/normalize'
-csv       = require 'csv-parser'
-fs        = require 'fs'
-path      = require 'path'
+djb        = require '../lib/djb'
+base94     = require '../lib/base94'
+normalize  = require '../lib/normalize'
+LineByLine = require 'line-by-line'
+fs         = require 'fs'
+path       = require 'path'
 
 tokoro = (address, callback) ->
   basePath = path.join __dirname, '..', 'data'
   key      = normalize address
   digest   = base94.encode djb key
   group    = Math.floor(djb(key).toString().slice(-4) / 5)
-  stream   = fs.createReadStream path.join basePath, "#{ group }.data"
-  console.log group, digest
-  console.log base94.decode "y'E"
+  stream   = new LineByLine path.join basePath, "#{ group }.data"
 
-  stream.pipe csv
-    separator: ' '
-    headers: ['digest', 'lat', 'long']
-  .on 'data', (record) ->
-    if digest == record.digest
+  stream
+  .on 'line', (line) ->
+    [dg, lt, lg] = line.split ' '
+    if digest == dg
       stream.pause()
       callback [
-        0.000001 * base94.decode record.lat
-        0.000001 * base94.decode record.long
+        base94.decode(lt) / 1000000
+        base94.decode(lg) / 1000000
       ]
   .on 'end', ->
     console.log 'Not found!'
