@@ -48,7 +48,7 @@ gulp.task 'geocode', (callback) ->
   thenable = Promise.resolve()
   while s = arr.shift()
     do (s) -> thenable = (thenable.then -> csv2data s)
-  thenable.then callback
+  thenable.then -> callback()
   return
 
 url  = (pref) -> "#{ BASE_URL }/#{ pref }000-#{ VERSION }.zip"
@@ -58,25 +58,14 @@ dist = (hash) -> path.join __dirname, 'data', "#{ hash }.data"
 # CSVデータを読み込んでハッシュテーブルに展開する
 csv2data = (name) ->
   new Promise (resolve, reject) ->
-    prev      = ''
-    keylist   = {} # 重複除去のため
-    hashlist  = {} # ハッシュの衝突検知のため
-    wstream   = null
-    collision = 0
-
+    keylist = {}
+    streamlist = [0...2000].map (i) -> fs.createWriteStream dist(i), flags: 'a'
     fs.createReadStream src name
     .pipe iconv # 文字コードをUTF-8に
     .pipe csv() # CSVをパース
     .on 'data', (record) ->
       key = record['都道府県名'] + record['市区町村名'] + record['大字・町丁目名'] + record['街区符号・地番']
-      group = record['都道府県名'] + record['市区町村名']
-
-      if prev != group
-        wstream.end() if wstream
-        keylist  = {}
-        hashlist = {}
-        wstream   = fs.createWriteStream dist djb group
-        prev      = group
+      group = Math.floor(djb(key).toString().slice(-4) / 5) # 数値ハッシュの下3.5桁
 
       # データ内に重複がある場合はスキップ
       return if keylist[key]?
@@ -86,14 +75,14 @@ csv2data = (name) ->
       lat    = base94.encode record['緯度'] * 1000000
       long   = base94.encode record['経度'] * 1000000
 
-      # ハッシュに衝突があっても止めない。今後、衝突数を減らすようハッシュ関数を調整する。
-      if hashlist[digest]?
-        collision++
-        return
-      hashlist[digest] = true
+      console.log key
+      streamlist[group].write "#{ digest } #{ lat } #{ long }\n" # スペース区切りで出力
 
-      wstream.write "#{ digest } #{ lat } #{ long }\n" # スペース区切りで出力
     .on 'end', ->
-      console.log "ハッシュに#{ collision }件の衝突がありました"
-      wstream.end() if wstream
+      # 一旦閉じて、メモリ解放
+      for i in [streamlist.length..1]
+        streamlist[i-1].end()
+        delete streamlist[i-1]
+      for key, _ of keylist
+        delete keylist[key]
       resolve()
