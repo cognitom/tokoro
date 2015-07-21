@@ -14,6 +14,27 @@
 - ハッシュ化し、1ファイルあたり、100KB以下に抑える
 - ハッシュ関数を最適化して、衝突をなるべく減らす (最初の時点で衝突ゼロは目指さない)
 
+## インストール
+
+※npmの登録は後日行います。下記はまだ使えません。
+
+```bash
+$ npm install --save tokoro
+```
+
+## 使い方
+
+### Node/io.jsから使う
+
+```javascript
+var tokoro = require('tokoro')
+
+tokoro('東京都世田谷区粕谷一丁目25', function(code) {
+  console.log('緯度', code[0]) // 35.662696
+  console.log('経度', code[1]) // 139.614003
+})
+```
+
 ## データについて
 
 国土交通省の公開している[街区レベル位置参照データ](http://nlftp.mlit.go.jp/isj/)を元にします。
