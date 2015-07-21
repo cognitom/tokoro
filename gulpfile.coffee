@@ -4,6 +4,7 @@ unzip       = require 'gulp-decompress'
 filter      = require 'gulp-filter'
 rename      = require 'gulp-rename'
 chmod       = require 'gulp-chmod'
+gutil       = require 'gulp-util'
 runSequence = require 'run-sequence'
 fs          = require 'fs'
 path        = require 'path'
@@ -75,7 +76,6 @@ csv2data = (name) ->
       lat    = base94.encode record['緯度'] * 1000000
       long   = base94.encode record['経度'] * 1000000
 
-      console.log key
       streamlist[group].write "#{ digest } #{ lat } #{ long }\n" # スペース区切りで出力
 
     .on 'end', ->
@@ -85,4 +85,5 @@ csv2data = (name) ->
         delete streamlist[i-1]
       for key, _ of keylist
         delete keylist[key]
+      gutil.log "#{ name } done."
       resolve()

@@ -16,6 +16,7 @@
     "gulp-download": "0.0.1",
     "gulp-filter": "^2.0.2",
     "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.6",
     "iconv": "^2.1.8",
     "mocha": "^2.2.5",
     "request": "^2.58.0",
