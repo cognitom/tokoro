@@ -2,7 +2,7 @@ CODE_BIGIN = 33
 BASE_NUM   = 94
 
 encode = (num) ->
-  num = Math.floor num
+  num = Math.round num
   ret = ''
   while num > 0
     d = num % BASE_NUM
