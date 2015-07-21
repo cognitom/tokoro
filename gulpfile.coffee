@@ -1,17 +1,18 @@
-gulp     = require 'gulp'
-download = require 'gulp-download'
-unzip    = require 'gulp-decompress'
-filter   = require 'gulp-filter'
-rename   = require 'gulp-rename'
-chmod    = require 'gulp-chmod'
-fs       = require 'fs'
-path     = require 'path'
-csv      = require 'csv-parser'
-through  = require 'through2'
-{Iconv}  = require 'iconv'
-djb      = require './lib/djb'
-base94   = require './lib/base94'
-iconv    = new Iconv 'SHIFT_JIS', 'UTF-8//TRANSLIT//IGNORE'
+gulp        = require 'gulp'
+download    = require 'gulp-download'
+unzip       = require 'gulp-decompress'
+filter      = require 'gulp-filter'
+rename      = require 'gulp-rename'
+chmod       = require 'gulp-chmod'
+runSequence = require 'run-sequence'
+fs          = require 'fs'
+path        = require 'path'
+csv         = require 'csv-parser'
+through     = require 'through2'
+{Iconv}     = require 'iconv'
+djb         = require './lib/djb'
+base94      = require './lib/base94'
+iconv       = new Iconv 'SHIFT_JIS', 'UTF-8//TRANSLIT//IGNORE'
 
 VERSION  = '12.0a'
 BASE_URL = "http://nlftp.mlit.go.jp/isj/dls/data/#{ VERSION }"
@@ -27,6 +28,9 @@ prefs += ' 36 37 38 39'                # 四国
 prefs += ' 40 41 42 43 44 45 46 47'    # 九州
 prefs = prefs.trim().split(' ')
 
+# まとめてタスクを実行
+gulp.task 'default', (cb) -> runSequence 'download', 'geocode', cb
+
 # 国交省の街区データをダウンロードして、CSVファイルのみを保存するタスク
 gulp.task 'download', ->
   download prefs.map (pref) -> url pref
@@ -38,7 +42,7 @@ gulp.task 'download', ->
   .pipe chmod 755
   .pipe gulp.dest './raw/'
 
-# ジオコードのハッシュテーブルを作成
+# ジオコードのハッシュテーブルを作成するタスク
 gulp.task 'geocode', (callback) ->
   arr = prefs
   thenable = Promise.resolve()
@@ -68,7 +72,6 @@ csv2data = (name) ->
       group = record['都道府県名'] + record['市区町村名']
 
       if prev != group
-        console.log (djb group), group
         wstream.end() if wstream
         keylist  = {}
         hashlist = {}
