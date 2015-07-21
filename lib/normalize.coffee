@@ -9,7 +9,7 @@ china = (raw) ->
   return CHINESE_NUMS[Math.floor(num / 10)] + '十' + china(num % 10) if num < 100
   throw 'Too big for me.'
 
-normalize = (str)
+normalize = (str) ->
   new Moji str
   .convert 'HK', 'ZK' # カタカナは全角
   .convert 'ZE', 'HE' # 英数は半角
@@ -23,7 +23,7 @@ normalize = (str)
   .replace /(\d+)丁目/, (_, m1) -> "#{ china m1 }丁目"
 
   # 番地以降は削除
-  .replace /(丁目\d+).+$/, '$1'
+  .replace /(丁目\d+)[^\d].*$/, '$1'
 
   # 「丁目」表記
   .replace /(\d+)-(\d+)/, (_, m1, m2) -> "#{ china m1 }丁目#{ m2}"
