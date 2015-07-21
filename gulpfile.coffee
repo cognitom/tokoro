@@ -27,7 +27,7 @@ prefs += ' 36 37 38 39'                # 四国
 prefs += ' 40 41 42 43 44 45 46 47'    # 九州
 prefs = prefs.trim().split(' ')
 
-# 総務省の街区データをダウンロードして、CSVファイルのみを保存するタスク
+# 国交省の街区データをダウンロードして、CSVファイルのみを保存するタスク
 gulp.task 'download', ->
   download prefs.map (pref) -> url pref
   .pipe unzip strip: 1
