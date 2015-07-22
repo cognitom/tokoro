@@ -26,6 +26,6 @@ normalize = (str) ->
   .replace /(丁目\d+)[^\d].*$/, '$1'
 
   # 「丁目」表記
-  .replace /(\d+)-(\d+)/, (_, m1, m2) -> "#{ china m1 }丁目#{ m2}"
+  .replace /(\d+)-(\d+)([^\d].+)$/, (_, m1, m2) -> "#{ china m1 }丁目#{ m2}"
 
 module.exports = normalize

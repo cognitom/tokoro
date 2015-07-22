@@ -1,5 +1,5 @@
 should    = require 'should'
-tokoro    = require '../src/'
+tokoro    = require '../src/tokoro-for-node'
 fs        = require 'fs'
 path      = require 'path'
 djb       = require '../lib/djb'
@@ -27,6 +27,10 @@ describe 'tokoro', ->
 
     it 'Math.round(132.832487 * 1000000) == 132832487', (done) ->
       Math.round(132.832487 * 1000000).should.equal 132832487
+      done()
+
+    it "東京都世田谷区代田6-11-14を正規化", (done) ->
+      normalize('東京都世田谷区代田6-11-14').should.equal '東京都世田谷区代田六丁目11'
       done()
 
   describe 'Node/io.js', ->
