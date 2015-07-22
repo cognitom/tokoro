@@ -22,10 +22,10 @@ normalize = (str) ->
   # 丁目は漢数字
   .replace /(\d+)丁目/, (_, m1) -> "#{ china m1 }丁目"
 
-  # 番地以降は削除
-  .replace /(丁目\d+)[^\d].*$/, '$1'
+  # 1-2-3 → 1丁目2-3
+  .replace /(\d+)\-(\d+)\-(\d+)$/, (_, m1, m2, m3) -> "#{ china m1 }丁目#{ m2}-#{ m3 }"
 
-  # 「丁目」表記
-  .replace /(\d+)-(\d+)/, (_, m1, m2) -> "#{ china m1 }丁目#{ m2}"
+  # 番地以降は削除
+  .replace /([^d\-]\d+)\-.*$/, '$1'
 
 module.exports = normalize
