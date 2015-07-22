@@ -1,6 +1,7 @@
 # tokoro
 
 Japanese geocoding library for front-end and node/io.js.
+
 国土交通省のデータを元にしたオープンな、住所緯度経度変換ライブラリ(ジオコーダー)です。フロントエンドから、あるいはNode/io.jsのモジュールとして利用可能です。
 [OpenStreetMap](https://www.openstreetmap.org/)と組み合わせると、簡単に住所から地図表示させることができます。
 
@@ -19,7 +20,7 @@ Japanese geocoding library for front-end and node/io.js.
 
 ## インストール
 
-インストール時に、位置参照データ(約200MB)をダウンロードするため、環境によって10分程度かかります。
+~~インストール時に、位置参照データ(約200MB)をダウンロードするため、環境によって10分程度かかります。~~ まだ、ちゃんと動かないので、こちらから[gh-pagesブランチ](https://github.com/cognitom/tokoro/archive/gh-pages.zip)をダウンロードしてください。(gh-pagesにはデータも含まれているので)
 
 ```bash
 $ npm install --save tokoro
