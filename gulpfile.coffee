@@ -5,6 +5,7 @@ unzip       = require 'gulp-decompress'
 filter      = require 'gulp-filter'
 rename      = require 'gulp-rename'
 chmod       = require 'gulp-chmod'
+zip         = require 'gulp-zip'
 runSequence = require 'run-sequence'
 requireDir  = require 'require-dir'
 dir         = requireDir './task'
@@ -15,24 +16,22 @@ GHPAGE_URL = 'https://github.com/cognitom/tokoro/archive/gh-pages.zip'
 
 # まとめてタスクを実行
 gulp.task 'default', (cb) ->
-  runSequence 'coffee', 'browserify', 'geocode', cb
+  runSequence ['coffee', 'browserify'], 'geocode', 'zip', cb
 
 gulp.task 'rebuild', (cb) ->
-  runSequence 'coffee', 'browserify', 'geocode:make', cb
+  runSequence ['coffee', 'browserify'], 'geocode:make', 'zip', cb
 
-# 作成済みのデータをGitHub Pagesからダウンロード (10分ほどかかります)
-gulp.task 'download', (cb) ->
-  download GHPAGE_URL
-  .pipe unzip strip: 2
-  .pipe filter '*.data'
-  .pipe chmod 644
-  .pipe gulp.dest './data/'
+# ダウンロード用のZipファイル生成
+gulp.task 'zip', ->
+	gulp.src './data/*.data'
+	.pipe zip 'data.zip'
+	.pipe gulp.dest './dist/'
 
 # スクリプトのコンパイル for Node/io.js
 gulp.task 'coffee', ->
-  gulp.src './src/tokoro-for-node.coffee'
+  gulp.src ['./src/**/*.coffee', '!./src/tokoro.coffee']
   .pipe coffee()
-  .pipe gulp.dest './dist/'
+  .pipe gulp.dest './'
 
 # サンプルページをウォッチするタスク
 gulp.task 'watch', ['watchify'], ->

@@ -1,18 +1,28 @@
 {
   "name": "tokoro",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Japanese geocoding library",
-  "main": "dist/tokoro-for-node.js",
+  "main": "index.js",
   "browser": "dist/tokoro.js",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script --require coffee-script/register -R spec",
     "build": "gulp",
     "rebuild": "gulp rebuild",
     "start": "gulp watch",
-    "postinstall": "gulp download"
+    "postinstall": "curl -L https://cognitom.github.io/tokoro/dist/data.zip > data.zip; unzip -oq data.zip -d data; rm data.zip"
   },
-  "author": "Tsutomu Kawamura",
+  "homepage": "https://github.com/cognitom/tokoro",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cognitom/tokoro.git"
+  },
+  "author": "Tsutomu Kawamura <cognitom@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "geo",
+    "geocoder",
+    "search"
+  ],
   "devDependencies": {
     "browser-sync": "^2.8.0",
     "browserify": "^11.0.0",
@@ -28,6 +38,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
+    "gulp-zip": "^3.0.2",
     "iconv": "^2.1.8",
     "mocha": "^2.2.5",
     "request": "^2.58.0",
