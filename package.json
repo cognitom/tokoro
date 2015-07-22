@@ -1,6 +1,6 @@
 {
   "name": "tokoro",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Japanese geocoding library",
   "main": "dist/tokoro-for-node.js",
   "browser": "dist/tokoro.js",
@@ -8,7 +8,8 @@
     "test": "mocha --compilers coffee:coffee-script --require coffee-script/register -R spec",
     "build": "gulp",
     "rebuild": "gulp rebuild",
-    "start": "gulp watch"
+    "start": "gulp watch",
+    "postinstall": "gulp download"
   },
   "author": "Tsutomu Kawamura",
   "license": "MIT",

@@ -50,3 +50,8 @@ describe 'tokoro', ->
         code[0].should.equal 33.808677
         code[1].should.equal 132.832487
         done()
+
+    it '東京都東京タワー(存在しない住所)', (done) ->
+      tokoro '東京都東京タワー', (code) ->
+        code.should.equal ''
+        done()

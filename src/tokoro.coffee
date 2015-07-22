@@ -25,6 +25,7 @@ tokoro = (address, callback) ->
           base94.decode(lt) / 1000000
           base94.decode(lg) / 1000000
         ]
+    callback '' # 見つからない場合は空文字列を返す
 
 if typeof exports == 'string'
   module.exports = tokoro

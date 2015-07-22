@@ -10,9 +10,13 @@ tokoro = (address, callback) ->
   key      = normalize address
   digest   = base94.encode djb key
   group    = Math.floor(djb(key).toString().slice(-4) / 5)
-  stream   = new LineByLine path.join basePath, "#{ group }.data"
+  dataPath = path.join basePath, "#{ group }.data"
+  stream   = new LineByLine dataPath
 
   stream
+  .on 'error', (err) ->
+    console.log 'Data file not found.'
+    callback ''
   .on 'line', (line) ->
     [dg, lt, lg] = line.split ' '
     if digest == dg
@@ -22,7 +26,6 @@ tokoro = (address, callback) ->
         base94.decode(lg) / 1000000
       ]
   .on 'end', ->
-    console.log 'Not found!'
-    callback ''
+    callback '' # 見つからない場合は空文字列を返す
 
 module.exports = tokoro
