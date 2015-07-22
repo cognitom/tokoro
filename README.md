@@ -20,7 +20,7 @@ Japanese geocoding library for front-end and node/io.js.
 
 ## インストール
 
-~~インストール時に、位置参照データ(約200MB)をダウンロードするため、環境によって10分程度かかります。~~ まだ、ちゃんと動かないので、こちらから[gh-pagesブランチ](https://github.com/cognitom/tokoro/archive/gh-pages.zip)をダウンロードしてください。(gh-pagesにはデータも含まれているので)
+npmには位置参照データを置いていません。モジュールとしてインストールする際に、GitHub Pagesにホストされているデータを自動的にダウンロードして取り込みます。そのため、`curl`と`unzip`コマンドが環境にインストールされている必要があります。
 
 ```bash
 $ npm install --save tokoro
@@ -30,7 +30,7 @@ $ npm install --save tokoro
 
 ### クライアントサイドで使う
 
-データファイルは同一ドメインに置くか、CORS設定をする必要があります。
+データファイルは同一ドメインに置くか、CORS設定してください。
 
 ```html
 <script src="dist/tokoro.js"></script>

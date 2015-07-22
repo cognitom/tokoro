@@ -1,7 +1,7 @@
-djb       = require '../lib/djb'
-base94    = require '../lib/base94'
-normalize = require '../lib/normalize'
-loader    = require '../lib/loader'
+djb       = require './lib/djb'
+base94    = require './lib/base94'
+normalize = require './lib/normalize'
+loader    = require './lib/loader'
 
 dataDir = 'node_modules/tokoro/data'
 

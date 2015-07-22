@@ -1,10 +1,10 @@
 should    = require 'should'
-tokoro    = require '../src/tokoro-for-node'
 fs        = require 'fs'
 path      = require 'path'
-djb       = require '../lib/djb'
-base94    = require '../lib/base94'
-normalize = require '../lib/normalize'
+tokoro    = require '../src/'
+djb       = require '../src/lib/djb'
+base94    = require '../src/lib/base94'
+normalize = require '../src/lib/normalize'
 
 describe 'tokoro', ->
 
