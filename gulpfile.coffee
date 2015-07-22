@@ -4,6 +4,7 @@ download    = require 'gulp-download'
 unzip       = require 'gulp-decompress'
 filter      = require 'gulp-filter'
 rename      = require 'gulp-rename'
+replace     = require 'gulp-replace'
 chmod       = require 'gulp-chmod'
 zip         = require 'gulp-zip'
 runSequence = require 'run-sequence'
@@ -31,6 +32,7 @@ gulp.task 'zip', ->
 gulp.task 'coffee', ->
   gulp.src ['./src/**/*.coffee', '!./src/tokoro.coffee']
   .pipe coffee()
+  .pipe replace "__dirname, '..', 'data'", "__dirname, 'data'" # パス調整
   .pipe gulp.dest './'
 
 # サンプルページをウォッチするタスク
