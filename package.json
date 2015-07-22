@@ -2,27 +2,40 @@
   "name": "tokoro",
   "version": "0.0.1",
   "description": "Japanese geocoding library",
-  "main": "index.js",
+  "main": "dist/tokoro-for-node.js",
+  "browser": "dist/tokoro.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script --require coffee-script/register -R spec"
+    "test": "mocha --compilers coffee:coffee-script --require coffee-script/register -R spec",
+    "build": "gulp",
+    "rebuild": "gulp rebuild",
+    "start": "gulp watch"
   },
   "author": "Tsutomu Kawamura",
   "license": "MIT",
   "devDependencies": {
+    "browser-sync": "^2.8.0",
+    "browserify": "^11.0.0",
     "coffee-script": "^1.9.3",
+    "coffeeify": "^1.1.0",
     "csv-parser": "^1.7.0",
     "gulp": "^3.9.0",
     "gulp-chmod": "^1.2.0",
+    "gulp-coffee": "^2.3.1",
     "gulp-decompress": "^1.0.2",
     "gulp-download": "0.0.1",
     "gulp-filter": "^2.0.2",
     "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "iconv": "^2.1.8",
     "mocha": "^2.2.5",
     "request": "^2.58.0",
+    "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2",
-    "should": "^7.0.2"
+    "should": "^7.0.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.3.0"
   },
   "dependencies": {
     "line-by-line": "^0.1.3",
