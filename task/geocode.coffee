@@ -39,7 +39,7 @@ gulp.task 'geocode:download', ->
   .pipe rename (path) ->
     path.basename = path.basename.replace /[^\d].+$/, ''
     path.extname  = '.csv'
-  .pipe chmod 755
+  .pipe chmod 644
   .pipe gulp.dest './raw/'
 
 # ジオコードのハッシュテーブルを作成するタスク

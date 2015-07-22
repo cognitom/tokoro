@@ -33,6 +33,10 @@ describe 'tokoro', ->
       normalize('東京都世田谷区代田6-11-14').should.equal '東京都世田谷区代田六丁目11'
       done()
 
+    it "東京都渋谷区元代々木町11-1を正規化", (done) ->
+      normalize('東京都渋谷区元代々木町11-1').should.equal '東京都渋谷区元代々木町11'
+      done()
+
   describe 'Node/io.js', ->
 
     it '東京都世田谷区粕谷一丁目25', (done) ->
