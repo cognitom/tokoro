@@ -3,7 +3,6 @@ fs        = require 'fs'
 path      = require 'path'
 tokoro    = require '../src/'
 djb       = require '../src/lib/djb'
-base94    = require '../src/lib/base94'
 normalize = require '../src/lib/normalize'
 
 describe 'tokoro', ->
@@ -11,19 +10,6 @@ describe 'tokoro', ->
   @timeout 10000
 
   describe 'Libraries', ->
-
-    it '35662696をbase94でエンコード', (done) ->
-      base94.encode(35662696).should.equal "Ky'E"
-      done()
-
-    it "Ky'Eをbase94でデコード", (done) ->
-      base94.decode("Ky'E").should.equal 35662696
-      done()
-
-    it "東京都世田谷区粕谷一丁目25のダイジェスト", (done) ->
-      digest = base94.encode djb '東京都世田谷区粕谷一丁目25'
-      digest.should.equal "BpA$'"
-      done()
 
     it 'Math.round(132.832487 * 1000000) == 132832487', (done) ->
       Math.round(132.832487 * 1000000).should.equal 132832487
@@ -39,6 +25,12 @@ describe 'tokoro', ->
 
   describe 'Node/io.js', ->
 
+    it '北海道札幌市北区新琴似町5', (done) ->
+      tokoro '北海道札幌市北区新琴似町5', (code) ->
+        code[0].should.equal 43.135097
+        code[1].should.equal 141.303030
+        done()
+
     it '東京都世田谷区粕谷一丁目25', (done) ->
       tokoro '東京都世田谷区粕谷一丁目25', (code) ->
         code[0].should.equal 35.662696
@@ -53,5 +45,5 @@ describe 'tokoro', ->
 
     it '東京都東京タワー(存在しない住所)', (done) ->
       tokoro '東京都東京タワー', (code) ->
-        code.should.equal ''
+        should(code).not.be.ok()
         done()
