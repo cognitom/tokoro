@@ -12,6 +12,7 @@ requireDir  = require 'require-dir'
 dir         = requireDir './task'
 browserSync = require 'browser-sync'
 reload      = browserSync.reload
+meta        = require './package.json'
 
 GHPAGE_URL = 'https://github.com/cognitom/tokoro/archive/gh-pages.zip'
 
@@ -24,9 +25,10 @@ gulp.task 'rebuild', (cb) ->
 
 # ダウンロード用のZipファイル生成
 gulp.task 'zip', ->
-	gulp.src './data/*.data'
-	.pipe zip 'data.zip'
-	.pipe gulp.dest './dist/'
+  v = meta.version.replace /^(\d+)\.(\d+).*$/, 'v$1$2'
+  gulp.src './data/*.data'
+  .pipe zip "data-#{ v }.zip"
+  .pipe gulp.dest './dist/'
 
 # スクリプトのコンパイル for Node/io.js
 gulp.task 'coffee', ->

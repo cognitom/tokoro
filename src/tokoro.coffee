@@ -1,8 +1,8 @@
 djb       = require './lib/djb'
-base94    = require './lib/base94'
 normalize = require './lib/normalize'
 loader    = require './lib/loader'
 
+# データが格納されているディレクトリ
 dataDir = 'node_modules/tokoro/data'
 
 setup = (option) ->
@@ -13,23 +13,27 @@ tokoro = (address, callback) ->
     setup address
     return
 
-  key    = normalize address
-  digest = base94.encode djb key
-  group  = Math.floor(djb(key).toString().slice(-4) / 5)
+  key   = normalize address
+  hash  = djb key
+  group = Math.floor(hash.toString().slice(-4) / 5)
 
-  loader "#{ dataDir }/#{ group }.data", (data) ->
-    for line in data.split '\n'
-      [dg, lt, lg] = line.split ' '
-      if digest == dg
+  loader "#{ dataDir }/#{ group }.data", (err, buffer) ->
+    # jDataViewはDataViewのPolyfill (IE9対応のため)
+    view = new (window.jDataView || DataView) buffer
+    offset = 0
+    while offset < buffer.byteLength
+      if hash == view.getUint32 offset
         return callback [
-          base94.decode(lt) / 1000000
-          base94.decode(lg) / 1000000
+          view.getUint32(offset + 4) / 1000000
+          view.getUint32(offset + 8) / 1000000
         ]
-    callback '' # 見つからない場合は空文字列を返す
+      offset += 12
+    callback() # 見つからない場合はundefinedを返す
 
-if typeof exports == 'string'
-  module.exports = tokoro
-else if typeof define == 'function' && define.amd
-  define -> window.tokoro = tokoro
-else
-  window.tokoro = tokoro
+unless window.tokoro
+  if typeof exports == 'string'
+    module.exports = tokoro
+  else if typeof define == 'function' && define.amd
+    define -> window.tokoro = tokoro
+  else
+    window.tokoro = tokoro

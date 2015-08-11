@@ -1,31 +1,28 @@
 djb        = require './lib/djb'
-base94     = require './lib/base94'
 normalize  = require './lib/normalize'
-LineByLine = require 'line-by-line'
 fs         = require 'fs'
 path       = require 'path'
 
 tokoro = (address, callback) ->
   basePath = path.join __dirname, '..', 'data'
   key      = normalize address
-  digest   = base94.encode djb key
-  group    = Math.floor(djb(key).toString().slice(-4) / 5)
+  hash     = djb key
+  group    = Math.floor(hash.toString().slice(-4) / 5)
   dataPath = path.join basePath, "#{ group }.data"
-  stream   = new LineByLine dataPath
 
-  stream
-  .on 'error', (err) ->
-    console.log 'Data file not found.'
-    callback ''
-  .on 'line', (line) ->
-    [dg, lt, lg] = line.split ' '
-    if digest == dg
-      stream.pause()
-      callback [
-        base94.decode(lt) / 1000000
-        base94.decode(lg) / 1000000
-      ]
-  .on 'end', ->
-    callback '' # 見つからない場合は空文字列を返す
+  fs.readFile dataPath, (error, buffer) ->
+    if error
+      console.log 'Data file not found.'
+      return callback()
+    offset = 0
+    while offset < buffer.length
+      if hash == buffer.readUInt32BE offset
+        callback [
+          buffer.readUInt32BE(offset + 4) / 1000000
+          buffer.readUInt32BE(offset + 8) / 1000000
+        ]
+        return
+      offset += 12
+    callback() # 見つからない場合はundefinedを返す
 
 module.exports = tokoro

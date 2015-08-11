@@ -1,6 +1,6 @@
 {
   "name": "tokoro",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Japanese geocoding library",
   "main": "index.js",
   "browser": "dist/tokoro.js",
@@ -9,7 +9,7 @@
     "build": "gulp",
     "rebuild": "gulp rebuild",
     "start": "gulp watch",
-    "postinstall": "curl -L https://cognitom.github.io/tokoro/dist/data.zip > data.zip; unzip -oq data.zip -d data; rm data.zip"
+    "postinstall": "curl -L https://cognitom.github.io/tokoro/dist/data-v02.zip > data.zip; unzip -oq data.zip -d data; rm data.zip"
   },
   "homepage": "https://github.com/cognitom/tokoro",
   "repository": {
