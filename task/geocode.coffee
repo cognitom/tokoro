@@ -11,11 +11,12 @@ path        = require 'path'
 csv         = require 'csv-parser'
 {Iconv}     = require 'iconv'
 djb         = require '../src/lib/djb'
-base94      = require '../src/lib/base94'
 iconv       = new Iconv 'SHIFT_JIS', 'UTF-8//TRANSLIT//IGNORE'
 
 VERSION  = '12.0a'
 BASE_URL = "http://nlftp.mlit.go.jp/isj/dls/data/#{ VERSION }"
+
+max_djb = 0
 
 prefs = ''
 prefs += ' 01'                         # 北海道
@@ -48,7 +49,9 @@ gulp.task 'geocode:make', (callback) ->
   thenable = Promise.resolve()
   while s = arr.shift()
     do (s) -> thenable = (thenable.then -> csv2data s)
-  thenable.then -> callback()
+  thenable.then ->
+    console.log max_djb
+    callback()
   return
 
 
@@ -73,11 +76,14 @@ csv2data = (name) ->
       return if keylist[key]?
       keylist[key] = true
 
-      digest = base94.encode djb key
-      lat    = base94.encode record['緯度'] * 1000000
-      long   = base94.encode record['経度'] * 1000000
+      hashed = djb key
+      buffer = new Buffer 12
+      buffer.writeUInt32BE hashed, 0
+      buffer.writeUInt32BE Math.round(record['緯度'] * 1000000), 4
+      buffer.writeUInt32BE Math.round(record['経度'] * 1000000), 8
+      streamlist[group].write buffer
 
-      streamlist[group].write "#{ digest } #{ lat } #{ long }\n" # スペース区切りで出力
+      max_djb = hashed if max_djb < hashed
 
     .on 'end', ->
       # 一旦閉じて、メモリ解放
