@@ -11,7 +11,6 @@ path        = require 'path'
 csv         = require 'csv-parser'
 {Iconv}     = require 'iconv'
 djb         = require '../src/lib/djb'
-base94      = require '../src/lib/base94'
 iconv       = new Iconv 'SHIFT_JIS', 'UTF-8//TRANSLIT//IGNORE'
 
 VERSION  = '12.0a'
