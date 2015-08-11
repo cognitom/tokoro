@@ -9,13 +9,13 @@ Japanese geocoding library for front-end and node/io.js.
 
 - フロントエンドだけでジオコーディング可能
 - モジュールを読み込むだけでNode/io.jsから利用可能 (DB不要)
-- 位置参照データは全体で200MB以下 (圧縮時100MB)
+- 位置参照データは全体で140MB以下 (圧縮時91.3MB)
 
 ## 実装と制限について
 
 - 緯度経度情報を2000ファイルに分割して格納
 - クライアントでの検索時、1検索ごとに1ファイルダウンロード
-- 1ファイルあたりの容量は90〜100KB程度
+- 1ファイルあたりの容量は63〜74KB程度
 - 全体で100件ほど(0.001%以下)、検索できないものあり ※ハッシュ関数の改良で改善の余地あり
 
 ## インストール
@@ -45,6 +45,15 @@ $ npm install --save tokoro
     }
   })
 </script>
+```
+
+なお、IE9にも対応させる場合は、PolyfillとしてjDataViewとjBinaryが必要です。`<head>`内に次の記述を追加します。
+
+```html
+<!--[if lt IE 10]>
+<script src="https://jdataview.github.io/dist/jdataview.js"></script>
+<script src="https://jdataview.github.io/dist/jbinary.js"></script>
+<![endif]-->
 ```
 
 ### Node/io.jsから使う
@@ -82,3 +91,8 @@ tokoro('東京都世田谷区粕谷一丁目25', function(code) {
 
 - プログラム部分: MIT
 - データ部分: オープンデータな何か
+
+## Changelog
+
+- 0.2.0 データ形式をバイナリに変更: 全体で137MB
+- 0.1.3 94進数での簡易圧縮: 全体で200MB
