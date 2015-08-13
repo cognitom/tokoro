@@ -1,6 +1,6 @@
 {
   "name": "tokoro",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Japanese geocoding library",
   "main": "index.js",
   "browser": "dist/tokoro.js",

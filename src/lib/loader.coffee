@@ -5,7 +5,6 @@ loader = (url, callback) ->
     callback '', req.response
 
   req.open 'GET', url, true
-  console.log 'no req.responseType' if !req.responseType
   req.responseType = 'arraybuffer'
   req.send ''
 
